@@ -1,5 +1,14 @@
 #pragma once
 
+#include <cstddef>
+
+#if _MSC_VER >= 1900
+#error
+#   define use_constexpr constexpr
+#else
+#   define use_constexpr
+#endif
+
 namespace virtualwrangler {
 
 typedef void(*VFPtr)();
@@ -15,14 +24,14 @@ struct VTable
 #endif
 
 template <typename C, typename R, typename... Args>
-inline constexpr size_t VirtualMethodIndex(R(C::*method)(Args...) const);
+inline use_constexpr size_t VirtualMethodIndex(R(C::*method)(Args...) const);
 template <typename C, typename R, typename... Args>
-inline constexpr size_t VirtualMethodIndex(R(C::*method)(Args...));
+inline use_constexpr size_t VirtualMethodIndex(R(C::*method)(Args...));
 
 template <typename C, typename R, typename... Args>
-inline constexpr bool IsMethodVirtual(R(C::*method)(Args...) const);
+inline use_constexpr bool IsMethodVirtual(R(C::*method)(Args...) const);
 template <typename C, typename R, typename... Args>
-inline constexpr bool IsMethodVirtual(R(C::*method)(Args...));
+inline use_constexpr bool IsMethodVirtual(R(C::*method)(Args...));
 
 template <typename C>
 inline VTable GetVTable();
